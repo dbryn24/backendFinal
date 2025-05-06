@@ -1,24 +1,22 @@
-
 //Layer service adalah layer untuk handle
 //Bussiness logic
 
-const { findAll, findById } = require("./inventory.repository");
+const { findAll, findById } = require("./supplier.repository");
 
-const getAllUsers = async () => {
-  const users = await findAll();
-  return users;
+const getAllSuppliers = async () => {
+  const suppliers = await findAll();
+  return suppliers;
 };
 
-const getUserById = async (id) => {
-  const users = await findById(id);
-  if (!users) {
-    throw Error("User tidak ditemukan");
+const getSupplierById = async (id) => {
+  const supplier = await findById(id);
+  if (!supplier) {
+    throw new Error("Supplier tidak ditemukan");
   }
-  return users;
+  return supplier;
 };
 
 module.exports = {
-  getAllUsers,
-  getUserById,
-
+  getAllSuppliers,
+  getSupplierById,
 };

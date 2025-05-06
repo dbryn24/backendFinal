@@ -1,7 +1,8 @@
 const { findAll, findById } = require("./product.repository");
 
 const getAllProducts = async () => {
-  return await findAll();
+  const products = await findAll();
+  return products;
 };
 
 const getProductById = async (id) => {
