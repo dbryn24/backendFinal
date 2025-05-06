@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
-import CategoryFilter from "@/components/CategoryFilter";
 import ProductsGrid from "@/components/ProductsGrid";
 import { categories, products } from "@/data/mockData";
 import { getProductsByCategory } from "@/utils/inventoryUtils";
@@ -9,15 +8,17 @@ import { getProductsByCategory } from "@/utils/inventoryUtils";
 const Index: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [productList, setProductList] = useState(products);
-  const navigate = useNavigate(); // Gunakan useNavigate untuk navigasi
+  const [filteredProducts, setFilteredProducts] = useState(products);
+  const navigate = useNavigate();
 
-  // Filter produk berdasarkan kategori yang dipilih
-  const filteredProducts = getProductsByCategory(selectedCategory, productList);
-
-  // Fungsi untuk logout
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn"); // Hapus status login
-    navigate("/login"); // Arahkan ke halaman login
+    localStorage.removeItem("isLoggedIn");
+    navigate("/login");
+  };
+
+  // Fungsi untuk menambah produk baru
+  const handleAddProduct = (newProduct: any) => {
+    setProductList((prevProducts) => [...prevProducts, newProduct]);
   };
 
   return (
@@ -40,15 +41,6 @@ const Index: React.FC = () => {
             Logout
           </button>
         </div>
-
-        <div className="bg-white rounded-lg shadow p-6 mb-8">
-          <CategoryFilter
-            categories={categories}
-            selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
-          />
-        </div>
-
         <div className="mb-6">
           <h2 className="text-2xl font-semibold mb-4">
             {selectedCategory
@@ -56,7 +48,7 @@ const Index: React.FC = () => {
               : "All Products"}
           </h2>
           <ProductsGrid
-            products={filteredProducts}
+            products={productList}
             onAddStock={(productId) => {
               const updatedProducts = productList.map((product) =>
                 product.id === productId
@@ -76,6 +68,13 @@ const Index: React.FC = () => {
               );
               setProductList(updatedProducts);
             }}
+            onUpdateProduct={(updatedProduct) => {
+              const updatedProducts = productList.map((product) =>
+                product.id === updatedProduct.id ? updatedProduct : product
+              );
+              setProductList(updatedProducts);
+            }}
+            onAddProduct={handleAddProduct}
           />
         </div>
       </main>
