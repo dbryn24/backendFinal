@@ -2,11 +2,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-
-const usersController = require("./app/user/inventory.controller");
-const inventoryController = require("./app/inventory/inventory.controller");
-const authController = require("./app/user/auth.controller");
-app.use("/api", authController);
+require("./database"); // Add this line to connect to database
 
 const app = express();
 
@@ -16,14 +12,23 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-// Melayani file frontend
-const frontendPath = path.join(__dirname, "Frontend", "dist"); // Sesuaikan folder build frontend
+// Import routes with correct paths
+const authRoutes = require("./app/auth/auth.controller"); // Updated path
+const userRoutes = require("./app/user/user.controller");
+const inventoryRoutes = require("./app/inventory/inventory.controller");
+
+// API Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/inventory", inventoryRoutes);
+
+// Serve frontend files
+const frontendPath = path.join(__dirname, "Frontend", "dist");
 app.use(express.static(frontendPath));
 
-// Rute fallback untuk SPA (Single Page Application)
+// Fallback route for SPA
 app.get("*", (req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
 });
 
-app.use("/api", usersController);
-app.use("/api", inventoryController);
+module.exports = app;
