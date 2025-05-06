@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import ProductsGrid from "@/components/ProductsGrid";
-import { categories, products } from "@/data/mockData";
-import { getProductsByCategory } from "@/utils/inventoryUtils";
+import { products } from "@/data/mockData";
 
 const Index: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [productList, setProductList] = useState(products);
-  const [filteredProducts, setFilteredProducts] = useState(products);
+  const [searchQuery, setSearchQuery] = useState(""); // State untuk kata kunci pencarian
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -16,10 +14,10 @@ const Index: React.FC = () => {
     navigate("/login");
   };
 
-  // Fungsi untuk menambah produk baru
-  const handleAddProduct = (newProduct: any) => {
-    setProductList((prevProducts) => [...prevProducts, newProduct]);
-  };
+  // Filter produk berdasarkan kata kunci pencarian
+  const filteredProducts = productList.filter((product) =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -41,49 +39,61 @@ const Index: React.FC = () => {
             Logout
           </button>
         </div>
+
+        {/* Input untuk pencarian */}
         <div className="mb-6">
-          <h2 className="text-2xl font-semibold mb-4">
-            {selectedCategory
-              ? categories.find((c) => c.id === selectedCategory)?.name
-              : "All Products"}
-          </h2>
-          <ProductsGrid
-            products={productList}
-            onAddStock={(productId) => {
-              const updatedProducts = productList.map((product) =>
-                product.id === productId
-                  ? { ...product, stockQuantity: product.stockQuantity + 1 }
-                  : product
-              );
-              setProductList(updatedProducts);
-            }}
-            onReduceStock={(productId) => {
-              const updatedProducts = productList.map((product) =>
-                product.id === productId
-                  ? {
-                      ...product,
-                      stockQuantity: Math.max(product.stockQuantity - 1, 0),
-                    }
-                  : product
-              );
-              setProductList(updatedProducts);
-            }}
-            onUpdateProduct={(updatedProduct) => {
-              const updatedProducts = productList.map((product) =>
-                product.id === updatedProduct.id ? updatedProduct : product
-              );
-              setProductList(updatedProducts); // Perbarui daftar produk
-            }}
-            onAddProduct={(newProduct) => {
-              setProductList((prevProducts) => [...prevProducts, newProduct]);
-            }}
-            onDeleteProduct={(productId) => {
-              const updatedProducts = productList.filter(
-                (product) => product.id !== productId
-              );
-              setProductList(updatedProducts); // Hapus produk dari daftar
-            }}
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="border px-4 py-2 rounded w-full"
           />
+        </div>
+
+        {/* Tampilkan produk atau pesan "Not Found" */}
+        <div className="mb-6">
+          {filteredProducts.length > 0 ? (
+            <ProductsGrid
+              products={filteredProducts}
+              onAddStock={(productId) => {
+                const updatedProducts = productList.map((product) =>
+                  product.id === productId
+                    ? { ...product, stockQuantity: product.stockQuantity + 1 }
+                    : product
+                );
+                setProductList(updatedProducts);
+              }}
+              onReduceStock={(productId) => {
+                const updatedProducts = productList.map((product) =>
+                  product.id === productId
+                    ? {
+                        ...product,
+                        stockQuantity: Math.max(product.stockQuantity - 1, 0),
+                      }
+                    : product
+                );
+                setProductList(updatedProducts);
+              }}
+              onUpdateProduct={(updatedProduct) => {
+                const updatedProducts = productList.map((product) =>
+                  product.id === updatedProduct.id ? updatedProduct : product
+                );
+                setProductList(updatedProducts);
+              }}
+              onAddProduct={(newProduct) => {
+                setProductList((prevProducts) => [...prevProducts, newProduct]);
+              }}
+              onDeleteProduct={(productId) => {
+                const updatedProducts = productList.filter(
+                  (product) => product.id !== productId
+                );
+                setProductList(updatedProducts);
+              }}
+            />
+          ) : (
+            <p className="text-center text-gray-500">No products found.</p>
+          )}
         </div>
       </main>
 

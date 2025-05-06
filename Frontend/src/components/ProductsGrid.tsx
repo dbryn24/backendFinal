@@ -112,7 +112,7 @@ const ProductsGrid: React.FC<ProductsGridProps> = ({
             onUpdateProduct={(updatedProduct) => {
               onUpdateProduct(updatedProduct);
             }}
-            onDeleteProduct={() => onDeleteProduct(product.id)} // Tambahkan handler hapus produk
+            onDeleteProduct={() => onDeleteProduct(product.id)}
           />
         ))}
       </div>
