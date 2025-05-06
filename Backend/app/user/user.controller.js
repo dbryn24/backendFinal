@@ -1,25 +1,24 @@
-//Layer controller untuk handle req dan res
-// Validasi body
-
 const express = require("express");
 const router = express.Router();
-const { getAllItems, addItem } = require("./inventory.service");
+const { getAllUsers, getUserById } = require("./user.service");
 
-router.get("/inventory", async (req, res) => {
+// Base route handler for GET /api/users
+router.get("/", async (req, res) => {
   try {
-    const items = await getAllItems();
-    res.json(items);
+    const users = await getAllUsers();
+    res.json(users);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({ message: error.message });
   }
 });
 
-router.post("/inventory", async (req, res) => {
+// Get user by ID
+router.get("/:id", async (req, res) => {
   try {
-    const newItem = await addItem(req.body);
-    res.status(201).json(newItem);
+    const user = await getUserById(req.params.id);
+    res.json(user);
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(404).json({ message: error.message });
   }
 });
 

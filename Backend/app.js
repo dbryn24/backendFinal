@@ -1,29 +1,33 @@
 const express = require("express");
+const cors = require("cors");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-
-const usersController = require("./app/user/inventory.controller");
-const inventoryController = require("./app/inventory/inventory.controller");
-const authController = require("./app/user/auth.controller");
-app.use("/api", authController);
+require("./database");
 
 const app = express();
 
+// Middleware
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
 
-// Melayani file frontend
-const frontendPath = path.join(__dirname, "Frontend", "dist"); // Sesuaikan folder build frontend
-app.use(express.static(frontendPath));
+// API Routes
+const authRoutes = require("./app/auth/auth.controller");
+const userRoutes = require("./app/user/user.controller"); // Fixed path
+const inventoryRoutes = require("./app/inventory/inventory.controller");
 
-// Rute fallback untuk SPA (Single Page Application)
-app.get("*", (req, res) => {
-  res.sendFile(path.join(frontendPath, "index.html"));
-});
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/inventory", inventoryRoutes);
 
-app.use("/api", usersController);
-app.use("/api", inventoryController);
+// Remove or comment out the frontend serving code for development
+// const frontendPath = path.join(__dirname, "Frontend", "dist");
+// app.use(express.static(frontendPath));
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(frontendPath, "index.html"));
+// });
+
+module.exports = app;

@@ -1,18 +1,15 @@
 const mongoose = require("mongoose");
 
-const inventorySchema = mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    quantity: { type: Number, required: true },
-    price: { type: Number, required: true },
+    username: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
   },
   {
-    versionKey: false,
     timestamps: true,
+    versionKey: false,
   }
 );
 
-//Buat Model
-const Inventory = mongoose.model("Inventory", inventorySchema);
-
-module.exports = Inventory;
+module.exports = mongoose.model("User", userSchema);
