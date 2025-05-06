@@ -1,10 +1,21 @@
-const { Schema, model } = require("mongoose");
+const mongoose = require("mongoose");
 
-const productSchema = new Schema({
-  namaKategori: { type: String, required: true },
-  namaProduk: { type: String, required: true },
-  hargaProduk: { type: Number, required: true },
-  jumlahStok: { type: Number, required: true },
-});
+const productSchema = new mongoose.Schema(
+  {
+    NamaProduct: { type: String, required: true },
+    Harga: { type: Number, required: true },
+    Stok: { type: Number, required: true },
+    CategoryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+    collection: "products", // Specify exact collection name
+  }
+);
 
-module.exports = model("Product", productSchema);
+module.exports = mongoose.model("Product", productSchema);
