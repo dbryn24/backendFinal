@@ -9,6 +9,7 @@ interface ProductCardProps {
   onAddStock: () => void;
   onReduceStock: () => void;
   onUpdateProduct: (updatedProduct: Product) => void;
+  onDeleteProduct: () => void; // Tambahkan handler untuk hapus produk
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -18,6 +19,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onAddStock,
   onReduceStock,
   onUpdateProduct,
+  onDeleteProduct,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedCategory, setEditedCategory] = useState(product.categoryId);
@@ -83,10 +85,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
               Remove
             </button>
             <button
-              className="bg-gray-500 text-white px-4 py-2 rounded"
+              className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
               onClick={() => setIsEditing(true)}
             >
               Edit
+            </button>
+            <button
+              className="bg-red-600 text-white px-4 py-2 rounded"
+              onClick={onDeleteProduct}
+            >
+              Delete
             </button>
           </div>
         </>

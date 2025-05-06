@@ -1,20 +1,24 @@
 import React, { useState } from "react";
 import { Product } from "@/types/inventory";
 import ProductCard from "./ProductCard";
-import { categories } from "@/data/mockData"; // Import kategori
+import { categories } from "@/data/mockData";
 
 interface ProductsGridProps {
   products: Product[];
   onAddStock: (productId: string) => void;
   onReduceStock: (productId: string) => void;
+  onUpdateProduct: (updatedProduct: Product) => void;
   onAddProduct: (newProduct: Product) => void;
+  onDeleteProduct: (productId: string) => void; // Tambahkan handler untuk hapus produk
 }
 
 const ProductsGrid: React.FC<ProductsGridProps> = ({
   products,
   onAddStock,
   onReduceStock,
+  onUpdateProduct,
   onAddProduct,
+  onDeleteProduct,
 }) => {
   const [newProductName, setNewProductName] = useState("");
   const [newProductStock, setNewProductStock] = useState(0);
@@ -33,8 +37,8 @@ const ProductsGrid: React.FC<ProductsGridProps> = ({
       id: Date.now().toString(), // Generate unique ID
       name: newProductName,
       stockQuantity: newProductStock,
-      categoryId: newProductCategory, // Assign selected category
-      supplierId: newProductSupplier, // Assign supplier name
+      categoryId: newProductCategory,
+      supplierId: newProductSupplier,
     };
 
     onAddProduct(newProduct);
@@ -43,14 +47,6 @@ const ProductsGrid: React.FC<ProductsGridProps> = ({
     setNewProductCategory(null);
     setNewProductSupplier("");
   };
-
-  if (products.length === 0) {
-    return (
-      <div className="text-center py-8">
-        <p className="text-gray-500">No products found.</p>
-      </div>
-    );
-  }
 
   return (
     <div>
@@ -114,11 +110,9 @@ const ProductsGrid: React.FC<ProductsGridProps> = ({
             onAddStock={() => onAddStock(product.id)}
             onReduceStock={() => onReduceStock(product.id)}
             onUpdateProduct={(updatedProduct) => {
-              const updatedProducts = products.map((p) =>
-                p.id === updatedProduct.id ? updatedProduct : p
-              );
-              onAddProduct(updatedProduct); // Update produk
+              onUpdateProduct(updatedProduct);
             }}
+            onDeleteProduct={() => onDeleteProduct(product.id)} // Tambahkan handler hapus produk
           />
         ))}
       </div>

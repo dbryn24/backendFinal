@@ -72,9 +72,17 @@ const Index: React.FC = () => {
               const updatedProducts = productList.map((product) =>
                 product.id === updatedProduct.id ? updatedProduct : product
               );
-              setProductList(updatedProducts);
+              setProductList(updatedProducts); // Perbarui daftar produk
             }}
-            onAddProduct={handleAddProduct}
+            onAddProduct={(newProduct) => {
+              setProductList((prevProducts) => [...prevProducts, newProduct]);
+            }}
+            onDeleteProduct={(productId) => {
+              const updatedProducts = productList.filter(
+                (product) => product.id !== productId
+              );
+              setProductList(updatedProducts); // Hapus produk dari daftar
+            }}
           />
         </div>
       </main>
