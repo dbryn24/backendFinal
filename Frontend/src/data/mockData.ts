@@ -9,17 +9,15 @@ export const updateStock = (productId: string, quantity: number): void => {
   }
 };
 export const categories: Category[] = [
-  { id: "cat1", name: "Electronics" },
-  { id: "cat2", name: "Office Supplies" },
-  { id: "cat3", name: "Furniture" },
-  { id: "cat4", name: "Kitchen" },
+  { id: "1", name: "Electronics" },
+  { id: "2", name: "Furniture" },
+  { id: "3", name: "Clothing" },
 ];
 
 export const suppliers: Supplier[] = [
-  { id: "sup1", name: "TechGiant Inc." },
-  { id: "sup2", name: "Office Solutions Ltd." },
-  { id: "sup3", name: "Furniture World" },
-  { id: "sup4", name: "Kitchen Essentials" },
+  { id: "1", name: "Supplier A" },
+  { id: "2", name: "Supplier B" },
+  { id: "3", name: "Supplier C" },
 ];
 
 export const products: Product[] = [

@@ -1,4 +1,3 @@
-
 import { categories, products, suppliers } from "../data/mockData";
 import { Category, Product, Supplier } from "../types/inventory";
 
@@ -10,14 +9,19 @@ export const getSupplierById = (supplierId: string): Supplier | undefined => {
   return suppliers.find((supplier) => supplier.id === supplierId);
 };
 
-export const getProductsByCategory = (categoryId: string | null): Product[] => {
-  if (!categoryId) return products;
+export const getProductsByCategory = (
+  categoryId: string | null,
+  products: any[]
+) => {
+  if (!categoryId) {
+    return products; // Jika kategori tidak dipilih, kembalikan semua produk
+  }
   return products.filter((product) => product.categoryId === categoryId);
 };
 
 export const formatCurrency = (amount: number): string => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
   }).format(amount);
 };

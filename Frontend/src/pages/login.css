@@ -151,3 +151,10 @@ html {
   margin-bottom: 10px;
   text-align: center;
 }
+
+.box-image {
+  width: 50px; /* Atur ukuran gambar */
+  height: auto;
+  margin-left: 10px; /* Jarak antara teks dan gambar */
+  vertical-align: middle; /* Agar sejajar dengan teks */
+}
