@@ -18,10 +18,14 @@ app.use(cookieParser());
 const authRoutes = require("./app/auth/auth.controller");
 const userRoutes = require("./app/user/user.controller"); // Fixed path
 const inventoryRoutes = require("./app/inventory/inventory.controller");
+const categoryRoutes = require("./app/category/category.controller"); // Tambah ini
+const productRoutes = require("./app/product/product.controller"); // Added product routes
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/inventory", inventoryRoutes);
+app.use("/api/category", categoryRoutes); // Tambah ini
+app.use("/api/products", productRoutes); // Added product routes
 
 // Remove or comment out the frontend serving code for development
 // const frontendPath = path.join(__dirname, "Frontend", "dist");

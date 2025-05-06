@@ -2,29 +2,15 @@ const express = require("express");
 const router = express.Router();
 const { getAllCategories, getCategoryById } = require("./category.service");
 
-router.get("/categories", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
+    console.log("Fetching categories...");
     const categories = await getAllCategories();
-    res.json({
-      status: "success",
-      message: "List of categories",
-      data: categories,
-    });
+    console.log("Categories found:", categories.length, "items:", categories);
+    res.json(categories);
   } catch (error) {
+    console.error("Error fetching categories:", error);
     res.status(500).json({ message: error.message });
-  }
-});
-
-router.get("/categories/:id", async (req, res) => {
-  try {
-    const category = await getCategoryById(req.params.id);
-    res.json({
-      status: "success",
-      message: "Category details",
-      data: category,
-    });
-  } catch (error) {
-    res.status(404).json({ message: error.message });
   }
 });
 
