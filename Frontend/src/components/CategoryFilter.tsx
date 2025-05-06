@@ -1,6 +1,5 @@
-
-import React from 'react';
-import { Category } from '@/types/inventory';
+import React, { useState } from "react";
+import { Category } from "@/types/inventory";
 
 interface CategoryFilterProps {
   categories: Category[];
@@ -20,8 +19,8 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
         <button
           className={`px-4 py-2 rounded-md transition-all ${
             selectedCategory === null
-              ? 'bg-inventory-primary text-white'
-              : 'bg-gray-100 hover:bg-gray-200'
+              ? "bg-inventory-primary text-white"
+              : "bg-gray-100 hover:bg-gray-200"
           }`}
           onClick={() => onSelectCategory(null)}
         >
@@ -32,8 +31,8 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
             key={category.id}
             className={`px-4 py-2 rounded-md transition-all ${
               selectedCategory === category.id
-                ? 'bg-inventory-primary text-white'
-                : 'bg-gray-100 hover:bg-gray-200'
+                ? "bg-inventory-primary text-white"
+                : "bg-gray-100 hover:bg-gray-200"
             }`}
             onClick={() => onSelectCategory(category.id)}
           >
@@ -45,4 +44,24 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
   );
 };
 
-export default CategoryFilter;
+const App: React.FC = () => {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const categories: Category[] = [
+    { id: "1", name: "Electronics" },
+    { id: "2", name: "Books" },
+    { id: "3", name: "Clothing" },
+  ];
+
+  return (
+    <CategoryFilter
+      categories={categories}
+      selectedCategory={selectedCategory}
+      onSelectCategory={(category) => {
+        console.log("Category Selected:", category);
+        setSelectedCategory(category);
+      }}
+    />
+  );
+};
+
+export default App;

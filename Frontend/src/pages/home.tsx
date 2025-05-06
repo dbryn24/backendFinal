@@ -1,24 +1,23 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
-import CategoryFilter from "@/components/CategoryFilter";
 import ProductsGrid from "@/components/ProductsGrid";
-import { categories, products } from "@/data/mockData";
-import { getProductsByCategory } from "@/utils/inventoryUtils";
+import { products } from "@/data/mockData";
 
 const Index: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [productList, setProductList] = useState(products);
-  const navigate = useNavigate(); // Gunakan useNavigate untuk navigasi
+  const [searchQuery, setSearchQuery] = useState(""); // State untuk kata kunci pencarian
+  const navigate = useNavigate();
 
-  // Filter produk berdasarkan kategori yang dipilih
-  const filteredProducts = getProductsByCategory(selectedCategory, productList);
-
-  // Fungsi untuk logout
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn"); // Hapus status login
-    navigate("/login"); // Arahkan ke halaman login
+    localStorage.removeItem("isLoggedIn");
+    navigate("/login");
   };
+
+  // Filter produk berdasarkan kata kunci pencarian
+  const filteredProducts = productList.filter((product) =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -41,42 +40,60 @@ const Index: React.FC = () => {
           </button>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6 mb-8">
-          <CategoryFilter
-            categories={categories}
-            selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
+        {/* Input untuk pencarian */}
+        <div className="mb-6">
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="border px-4 py-2 rounded w-full"
           />
         </div>
 
+        {/* Tampilkan produk atau pesan "Not Found" */}
         <div className="mb-6">
-          <h2 className="text-2xl font-semibold mb-4">
-            {selectedCategory
-              ? categories.find((c) => c.id === selectedCategory)?.name
-              : "All Products"}
-          </h2>
-          <ProductsGrid
-            products={filteredProducts}
-            onAddStock={(productId) => {
-              const updatedProducts = productList.map((product) =>
-                product.id === productId
-                  ? { ...product, stockQuantity: product.stockQuantity + 1 }
-                  : product
-              );
-              setProductList(updatedProducts);
-            }}
-            onReduceStock={(productId) => {
-              const updatedProducts = productList.map((product) =>
-                product.id === productId
-                  ? {
-                      ...product,
-                      stockQuantity: Math.max(product.stockQuantity - 1, 0),
-                    }
-                  : product
-              );
-              setProductList(updatedProducts);
-            }}
-          />
+          {filteredProducts.length > 0 ? (
+            <ProductsGrid
+              products={filteredProducts}
+              onAddStock={(productId) => {
+                const updatedProducts = productList.map((product) =>
+                  product.id === productId
+                    ? { ...product, stockQuantity: product.stockQuantity + 1 }
+                    : product
+                );
+                setProductList(updatedProducts);
+              }}
+              onReduceStock={(productId) => {
+                const updatedProducts = productList.map((product) =>
+                  product.id === productId
+                    ? {
+                        ...product,
+                        stockQuantity: Math.max(product.stockQuantity - 1, 0),
+                      }
+                    : product
+                );
+                setProductList(updatedProducts);
+              }}
+              onUpdateProduct={(updatedProduct) => {
+                const updatedProducts = productList.map((product) =>
+                  product.id === updatedProduct.id ? updatedProduct : product
+                );
+                setProductList(updatedProducts);
+              }}
+              onAddProduct={(newProduct) => {
+                setProductList((prevProducts) => [...prevProducts, newProduct]);
+              }}
+              onDeleteProduct={(productId) => {
+                const updatedProducts = productList.filter(
+                  (product) => product.id !== productId
+                );
+                setProductList(updatedProducts);
+              }}
+            />
+          ) : (
+            <p className="text-center text-gray-500">No products found.</p>
+          )}
         </div>
       </main>
 
