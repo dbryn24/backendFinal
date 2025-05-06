@@ -16,16 +16,16 @@ const Login = () => {
 
     // Arahkan ke halaman utama
     navigate("/");
-  }; // Pastikan fungsi handleLogin ditutup di sini
+  };
 
   return (
     <div className="login-wrapper">
       <div className="login-left">
-        <h1>Welcome to website</h1>
+        <h1>Welcome to InventKU</h1>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam
-          nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
-          volutpat.
+          "Welcome to the Inventory Website. This platform helps you record,
+          monitor, and manage stock data in real-time. Please log in to access
+          features and manage your inventory efficiently.
         </p>
       </div>
       <div className="login-right">
