@@ -4,8 +4,8 @@ const getAllItems = async () => {
   return await Inventory.find();
 };
 
-const addItem = async (itemData) => {
-  const newItem = new Inventory(itemData);
+const addItem = async (item) => {
+  const newItem = new Inventory(item);
   return await newItem.save();
 };
 

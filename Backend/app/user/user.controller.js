@@ -1,14 +1,25 @@
 const express = require("express");
 const router = express.Router();
+const { getAllUsers, getUserById } = require("./user.service");
 
-// User routes
-router.get("/", (req, res) => {
-  res.json({ message: "User routes working" });
+// Base route handler for GET /api/users
+router.get("/", async (req, res) => {
+  try {
+    const users = await getAllUsers();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
-router.get("/profile", (req, res) => {
-  res.json({ message: "User profile route" });
+// Get user by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const user = await getUserById(req.params.id);
+    res.json(user);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
 });
 
-// Make sure to export the router
 module.exports = router;
