@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
+import Index from "./home";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -14,7 +15,7 @@ const Login = () => {
     localStorage.setItem("isLoggedIn", "true");
 
     // Arahkan ke halaman utama
-    navigate("/index");
+    navigate("/");
   }; // Pastikan fungsi handleLogin ditutup di sini
 
   return (

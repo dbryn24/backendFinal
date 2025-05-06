@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import SignUp from "./SignUp";
-import Index from "./Index";
+import Index from "./home";
 import Login from "./Login";
 
 const NotFound = () => {
