@@ -1,20 +1,15 @@
-
 const mongoose = require("mongoose");
 
-const inventorySchema = mongoose.Schema(
+const supplierSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    quantity: { type: Number, required: true },
-    price: { type: Number, required: true },
+    NamaProduk: { type: String, required: true },
+    NamaSupplier: { type: String, required: true },
   },
   {
-    versionKey: false,
     timestamps: true,
+    versionKey: false,
+    collection: "supplier",
   }
 );
 
-//Buat Model
-const Inventory = mongoose.model("Inventory", inventorySchema);
-
-module.exports = Inventory;
-
+module.exports = mongoose.model("Supplier", supplierSchema);

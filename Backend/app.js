@@ -20,12 +20,14 @@ const userRoutes = require("./app/user/user.controller"); // Fixed path
 const inventoryRoutes = require("./app/inventory/inventory.controller");
 const categoryRoutes = require("./app/category/category.controller"); // Tambah ini
 const productRoutes = require("./app/product/product.controller"); // Added product routes
+const supplierRoutes = require("./app/supplier/supplier.controller");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/category", categoryRoutes); // Tambah ini
 app.use("/api/products", productRoutes); // Added product routes
+app.use("/api/supplier", supplierRoutes);
 
 // Remove or comment out the frontend serving code for development
 // const frontendPath = path.join(__dirname, "Frontend", "dist");
