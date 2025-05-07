@@ -41,21 +41,24 @@ export const getAuthHeaders = () => {
 
 // Authenticated fetch wrapper
 export const authFetch = async (url, options = {}) => {
+  // Get the token from localStorage or wherever you store it
+  const token = localStorage.getItem("token");
+
+  // Add authorization header
   const headers = {
     ...options.headers,
-    ...getAuthHeaders(),
+    Authorization: `Bearer ${token}`,
   };
 
+  // Make the fetch request
   const response = await fetch(url, {
     ...options,
     headers,
   });
 
-  // Handle 401 Unauthorized (token expired or invalid)
-  if (response.status === 401) {
-    logout();
-    return null;
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
   }
 
-  return response;
+  return response.json();
 };

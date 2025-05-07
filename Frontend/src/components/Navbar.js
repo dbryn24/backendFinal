@@ -1,17 +1,51 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import {
+  FaWarehouse,
+  FaBoxes,
+  FaTruck,
+  FaTags,
+  FaSignOutAlt,
+  FaThLarge,
+} from "react-icons/fa";
+import "../assets/style/navbar.css";
 
-export default function Navbar() {
+const Navbar = () => {
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  };
+
   return (
-    <nav className="bg-white shadow mb-6">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <Link to="/" className="text-xl font-bold text-blue-600">
-          MyApp
+    <nav className="navbar">
+      <div className="navbar-brand">
+        <FaWarehouse className="brand-icon" />
+        <span className="brand-text">Inventory System</span>
+      </div>
+      <div className="nav-links">
+        <Link to="/" className="nav-link">
+          <FaThLarge className="nav-icon" />
+          <span>All Categories</span>
         </Link>
-        <Link to="/login" className="text-gray-600 hover:text-gray-800">
-          Login
+        <Link to="/products" className="nav-link">
+          <FaBoxes className="nav-icon" />
+          <span>Products</span>
+        </Link>
+        <Link to="/suppliers" className="nav-link">
+          <FaTruck className="nav-icon" />
+          <span>Suppliers</span>
+        </Link>
+        <Link to="/categories" className="nav-link">
+          <FaTags className="nav-icon" />
+          <span>Categories</span>
         </Link>
       </div>
+      <button onClick={handleLogout} className="logout-btn">
+        <FaSignOutAlt className="logout-icon" />
+        <span>Logout</span>
+      </button>
     </nav>
   );
-}
+};
+
+export default Navbar;
