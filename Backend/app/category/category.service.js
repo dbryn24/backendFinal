@@ -1,4 +1,4 @@
-const { findAll, findById } = require("./category.repository");
+const { findAll, findById, create } = require("./category.repository");
 
 const getAllCategories = async () => {
   const categories = await findAll();
@@ -13,7 +13,15 @@ const getCategoryById = async (id) => {
   return category;
 };
 
+const createCategory = async (categoryData) => {
+  if (!categoryData.NamaKategori) {
+    throw new Error("NamaKategori is required");
+  }
+  return await create(categoryData);
+};
+
 module.exports = {
   getAllCategories,
   getCategoryById,
+  createCategory,
 };

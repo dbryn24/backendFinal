@@ -1,49 +1,114 @@
-import React, { useState } from "react";
-import api from "../services/api";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import "../assets/style/login.css";
+import { FaWarehouse, FaUser, FaLock, FaSignInAlt } from "react-icons/fa";
 
-export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const Login = () => {
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+    if (error) setError("");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = await api.post("/auth/login", { username, password });
-      localStorage.setItem("token", res.data.token);
-      api.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
-      navigate("/");
-    } catch (err) {
-      alert("Login gagal");
-    }
+    setIsLoading(true);
+
+    // Simulasi login tanpa autentikasi
+    setTimeout(() => {
+      // Simpan status login di localStorage
+      localStorage.setItem("isAuthenticated", "true");
+      localStorage.setItem("userName", formData.username);
+
+      // Arahkan ke halaman home
+      navigate("/home", { replace: true });
+      setIsLoading(false);
+    }, 1000); // Simulasi delay 1 detik
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded shadow">
-      <h1 className="text-2xl mb-4">Login</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full border rounded px-3 py-2 mb-3"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full border rounded px-3 py-2 mb-3"
-        />
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded"
-        >
-          Login
-        </button>
-      </form>
+    <div className="login-container">
+      <div className="login-card">
+        <div className="login-header">
+          <div className="logo-container">
+            <FaWarehouse className="logo-icon" />
+            <h1 className="logo-text">InventKu</h1>
+          </div>
+          <p className="login-subtitle">
+            Warehouses Inventory Management System
+          </p>
+        </div>
+
+        <form className="login-form" onSubmit={handleSubmit}>
+          {error && <div className="error-message">{error}</div>}
+
+          <div className="form-group">
+            <label htmlFor="username">
+              <FaUser className="input-icon" />
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter your username"
+              value={formData.username}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">
+              <FaLock className="input-icon" />
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+          </div>
+
+          <button
+            type="submit"
+            className={`login-button ${isLoading ? "loading" : ""}`}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <span className="spinner"></span>
+                <span>Logging in...</span>
+              </>
+            ) : (
+              <>
+                <FaSignInAlt />
+                <span>Log In</span>
+              </>
+            )}
+          </button>
+        </form>
+
+        <div className="login-footer">
+          <p>Make Our Work Easy</p>
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default Login;

@@ -13,12 +13,22 @@ const addItem = async (item) => {
   return await newItem.save();
 };
 
+// User repository functions
 const findAll = async () => {
-  return await User.find();
+  return await User.find().lean().exec();
 };
 
 const findById = async (id) => {
-  return await User.findById(id);
+  return await User.findById(id).lean().exec();
+};
+
+const create = async (userData) => {
+  const user = new User(userData);
+  return await user.save();
+};
+
+const remove = async (id) => {
+  return await User.findByIdAndDelete(id).lean().exec();
 };
 
 module.exports = {
@@ -26,4 +36,6 @@ module.exports = {
   addItem,
   findAll,
   findById,
+  create,
+  remove,
 };
