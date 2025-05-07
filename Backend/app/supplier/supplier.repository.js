@@ -1,18 +1,17 @@
-
 //Layer repository berfungsi untuk komunikasi dengan
 // database boleh ODM boleh juga pakai raw query
 
-const Inventory = require("./inventory.model");
+const Supplier = require("./supplier.model");
 
-const getAllItems = async () => {
-  return await Inventory.find();
+const findAll = async () => {
+  return await Supplier.find();
 };
 
-const addItem = async (item) => {
-  const newItem = new Inventory(item);
-  return await newItem.save();
+const findById = async (id) => {
+  return await Supplier.findById(id);
 };
 
 module.exports = {
-  getAllItems,
-  addItem,
+  findAll,
+  findById,
+};

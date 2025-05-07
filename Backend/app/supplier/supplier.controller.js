@@ -3,23 +3,26 @@
 
 const express = require("express");
 const router = express.Router();
-const { getAllItems, addItem } = require("./inventory.service");
+const { getAllSuppliers, getSupplierById } = require("./supplier.service");
 
-router.get("/inventory", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const items = await getAllItems();
-    res.json(items);
+    console.log("Fetching suppliers...");
+    const suppliers = await getAllSuppliers();
+    console.log("Suppliers found:", suppliers.length, "items:", suppliers);
+    res.json(suppliers);
   } catch (error) {
-    res.status(500).send(error.message);
+    console.error("Error fetching suppliers:", error);
+    res.status(500).json({ message: error.message });
   }
 });
 
-router.post("/inventory", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const newItem = await addItem(req.body);
-    res.status(201).json(newItem);
+    const supplier = await getSupplierById(req.params.id);
+    res.json(supplier);
   } catch (error) {
-    res.status(400).send(error.message
+    res.status(404).json({ message: error.message });
   }
 });
 

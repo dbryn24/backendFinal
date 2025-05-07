@@ -1,7 +1,8 @@
 const { findAll, findById } = require("./category.repository");
 
 const getAllCategories = async () => {
-  return await findAll();
+  const categories = await findAll();
+  return categories;
 };
 
 const getCategoryById = async (id) => {
