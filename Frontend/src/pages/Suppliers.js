@@ -7,11 +7,11 @@ const Suppliers = () => {
   const [suppliers, setSuppliers] = useState([
     {
       id: 1,
-      name: "Food Supplier Co",
-      contact: "John Doe",
+      name: "PT. Food Supplier",
+      contact: "Axel",
       phone: "123-456-7890",
-      email: "john@foodsupplier.com",
-      address: "123 Food St, Kitchen City",
+      email: "axel@foodsupplier.com",
+      address: "Jl. Cendrawasih, Kota Manado",
     },
     // Add more sample suppliers as needed
   ]);

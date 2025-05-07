@@ -7,10 +7,10 @@ const Products = () => {
   const [products, setProducts] = useState([
     {
       id: 1,
-      name: "Rice",
+      name: "AQUA",
       price: 25000,
-      category: "Food",
-      description: "Premium quality rice",
+      category: "Minuman",
+      description: "",
     },
     // Add more sample products as needed
   ]);
