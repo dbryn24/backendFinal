@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { getAllCategories, getCategoryById } = require("./category.service");
+const {
+  getAllCategories,
+  getCategoryById,
+  createCategory,
+} = require("./category.service");
 
 router.get("/", async (req, res) => {
   try {
@@ -11,6 +15,17 @@ router.get("/", async (req, res) => {
   } catch (error) {
     console.error("Error fetching categories:", error);
     res.status(500).json({ message: error.message });
+  }
+});
+
+router.post("/", async (req, res) => {
+  try {
+    console.log("Incoming request body:", req.body); // Log the request body
+    const newCategory = await createCategory(req.body);
+    res.status(201).json(newCategory);
+  } catch (error) {
+    console.error("Error creating category:", error);
+    res.status(400).json({ message: error.message });
   }
 });
 

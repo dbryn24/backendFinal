@@ -29,6 +29,11 @@ app.use("/api/category", categoryRoutes); // Tambah ini
 app.use("/api/products", productRoutes); // Added product routes
 app.use("/api/supplier", supplierRoutes);
 
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
 // Remove or comment out the frontend serving code for development
 // const frontendPath = path.join(__dirname, "Frontend", "dist");
 // app.use(express.static(frontendPath));

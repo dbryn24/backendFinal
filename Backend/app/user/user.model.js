@@ -1,15 +1,25 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema(
-  {
-    username: { type: String, required: true },
-    email: { type: String, required: true },
-    password: { type: String, required: true },
+const userSchema = new mongoose.Schema({
+  NamaUser: {
+    type: String,
+    required: true,
+    index: true, // Add index for faster queries
   },
-  {
-    timestamps: true,
-    versionKey: false,
-  }
-);
+  Role: {
+    type: String,
+    required: true,
+    enum: ["admin", "user", "owner"], // Restrict possible values
+    default: "user",
+  },
+});
 
-module.exports = mongoose.model("User", userSchema);
+// Add compound index for common queries
+userSchema.index({ NamaUser: 1, Role: 1 });
+
+const User = mongoose.model("User", userSchema);
+
+// Ensure indexes are created
+User.createIndexes();
+
+module.exports = User;

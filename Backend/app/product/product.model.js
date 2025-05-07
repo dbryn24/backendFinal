@@ -2,19 +2,26 @@ const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema(
   {
-    NamaProduct: { type: String, required: true },
-    Harga: { type: Number, required: true },
-    Stok: { type: Number, required: true },
+    NamaProduct: {
+      type: String,
+      required: [true, "NamaProduct is required"],
+    },
+    Harga: {
+      type: Number,
+      required: [true, "Harga is required"],
+    },
+    Stok: {
+      type: Number,
+      required: [true, "Stok is required"],
+    },
     CategoryId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
-      required: true,
+      required: [true, "CategoryId is required"],
     },
   },
   {
     timestamps: true,
-    versionKey: false,
-    collection: "products", // Specify exact collection name
   }
 );
 
