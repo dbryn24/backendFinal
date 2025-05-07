@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/style/login.css";
 import { FaWarehouse, FaUser, FaLock, FaSignInAlt } from "react-icons/fa";
@@ -12,6 +12,14 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+  
+  // Check if already logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/home", { replace: true });
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,17 +33,41 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(""); // Reset error before new submission
 
-    // Simulasi login tanpa autentikasi
-    setTimeout(() => {
-      // Simpan status login di localStorage
-      localStorage.setItem("isAuthenticated", "true");
-      localStorage.setItem("userName", formData.username);
+    try {
+      // Use the auth login endpoint from your backend
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password
+        }),
+      });
 
-      // Arahkan ke halaman home
-      navigate("/home", { replace: true });
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        // Store authentication data in localStorage
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        
+        // Navigate to home page
+        navigate("/home", { replace: true });
+      } else {
+        // Handle error from server
+        setError(data.message || "Login failed. Please check your credentials.");
+      }
+    } catch (error) {
+      // Handle network or other errors
+      console.error("Login error:", error);
+      setError("An error occurred during login. Please try again.");
+    } finally {
       setIsLoading(false);
-    }, 1000); // Simulasi delay 1 detik
+    }
   };
 
   return (
@@ -66,6 +98,7 @@ const Login = () => {
               placeholder="Enter your username"
               value={formData.username}
               onChange={handleChange}
+              required
             />
           </div>
 
@@ -81,6 +114,7 @@ const Login = () => {
               placeholder="Enter your password"
               value={formData.password}
               onChange={handleChange}
+              required
             />
           </div>
 

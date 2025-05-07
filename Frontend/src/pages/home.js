@@ -1,10 +1,10 @@
 import React from "react";
-import ProductList from "./ProductList";
 
 export default function Home() {
   return (
     <div className="container">
-      <ProductList />
+      <h1>Selamat Datang di Halaman Home</h1>
+      <p>Ini adalah halaman utama dari aplikasi Anda.</p>
     </div>
   );
 }
