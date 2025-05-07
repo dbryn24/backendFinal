@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
@@ -24,4 +21,3 @@ yarn-debug.log*
 yarn-error.log*
 =======
 node_modules/
->>>>>>> 20ba6e0cd13c93e4f495033cfbe5f8de06ab5a63
