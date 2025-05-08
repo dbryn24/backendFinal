@@ -41,21 +41,24 @@ export const getAuthHeaders = () => {
 
 // Authenticated fetch wrapper
 export const authFetch = async (url, options = {}) => {
+  // Get the token using the getToken function for consistency
+  const token = getToken();
+
+  // Add authorization header
   const headers = {
     ...options.headers,
-    ...getAuthHeaders(),
+    "x-auth-token": token || "", // Changed to match authenticate middleware
   };
 
+  // Make the fetch request
   const response = await fetch(url, {
     ...options,
     headers,
   });
 
-  // Handle 401 Unauthorized (token expired or invalid)
-  if (response.status === 401) {
-    logout();
-    return null;
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
   }
 
-  return response;
+  return response.json();
 };

@@ -1,3 +1,4 @@
+// File: app/product/product.model.js
 const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema(
@@ -19,9 +20,15 @@ const productSchema = new mongoose.Schema(
       ref: "Category",
       required: [true, "CategoryId is required"],
     },
+    NamaSupplier: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,
+    versionKey: false,
+    collection: "products",
   }
 );
 

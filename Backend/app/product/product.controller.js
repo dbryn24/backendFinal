@@ -1,3 +1,4 @@
+// File: app/product/product.controller.js
 const express = require("express");
 const router = express.Router();
 const {
@@ -5,6 +6,8 @@ const {
   getProductById,
   createProduct,
   updateProduct,
+  deleteProduct,
+  updateStock,
 } = require("./product.service");
 
 // GET route to fetch all products
@@ -12,7 +15,7 @@ router.get("/", async (req, res) => {
   try {
     console.log("Fetching products...");
     const products = await getAllProducts();
-    console.log("Products found:", products.length, "items:", products);
+    console.log("Products found:", products.length);
     res.json(products);
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -52,6 +55,16 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     console.log("Updating product with ID:", req.params.id);
+    console.log("Update data received:", req.body);
+
+    // Transform supplier field if needed
+    if (
+      req.body.supplier !== undefined &&
+      req.body.NamaSupplier === undefined
+    ) {
+      req.body.NamaSupplier = req.body.supplier;
+    }
+
     const updatedProduct = await updateProduct(req.params.id, req.body);
 
     if (!updatedProduct) {
@@ -65,6 +78,27 @@ router.put("/:id", async (req, res) => {
     });
   } catch (error) {
     console.error("Error updating product:", error);
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// DELETE route to delete a product
+router.delete("/:id", async (req, res) => {
+  try {
+    await deleteProduct(req.params.id);
+    res.json({ message: "Product deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// PUT route to update stock
+router.put("/:id/stock", async (req, res) => {
+  try {
+    const { action } = req.body;
+    const product = await updateStock(req.params.id, action);
+    res.json(product);
+  } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });

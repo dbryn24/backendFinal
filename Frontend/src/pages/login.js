@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/style/login.css";
 import { FaWarehouse, FaUser, FaLock, FaSignInAlt } from "react-icons/fa";
+import { API_BASE_URL } from "../utils/api";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +13,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-  
+
   // Check if already logged in
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -36,15 +37,15 @@ const Login = () => {
     setError(""); // Reset error before new submission
 
     try {
-      // Use the auth login endpoint from your backend
-      const response = await fetch("/api/auth/login", {
+      // Use the auth login endpoint with API_BASE_URL
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           username: formData.username,
-          password: formData.password
+          password: formData.password,
         }),
       });
 
@@ -54,12 +55,14 @@ const Login = () => {
         // Store authentication data in localStorage
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        
+
         // Navigate to home page
         navigate("/home", { replace: true });
       } else {
         // Handle error from server
-        setError(data.message || "Login failed. Please check your credentials.");
+        setError(
+          data.message || "Login failed. Please check your credentials."
+        );
       }
     } catch (error) {
       // Handle network or other errors

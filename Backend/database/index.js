@@ -1,18 +1,21 @@
 const mongoose = require("mongoose");
-const { mongoUrl } = require("../config");
+const dotenv = require("dotenv");
 
-if (!mongoUrl) {
-  console.error("MongoDB connection URL is not defined!");
-  process.exit(1);
-}
+// Load environment variables
+dotenv.config();
 
-console.log("Attempting to connect to MongoDB...");
+// Use MONGO_URL from environment variables
+const mongoUrl =
+  process.env.MONGO_URL || "mongodb://127.0.0.1:27017/inventory_db";
 
+// MongoDB connection
 mongoose
-  .connect(mongoUrl)
+  .connect(mongoUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("Connected to MongoDB successfully");
-    console.log("Database URL:", mongoUrl);
   })
   .catch((error) => {
     console.error("MongoDB connection error:", error);

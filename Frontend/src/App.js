@@ -7,6 +7,9 @@ import {
 } from "react-router-dom";
 import Login from "./pages/login";
 import Home from "./pages/home";
+import Products from "./pages/Products";
+import Suppliers from "./pages/Suppliers";
+import Categories from "./pages/Categories";
 import { isAuthenticated } from "./utils/authUtils"; // Import the auth utility
 
 // Protected route component
@@ -30,6 +33,30 @@ function App() {
               element={
                 <PrivateRoute>
                   <Home />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/products"
+              element={
+                <PrivateRoute>
+                  <Products />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/suppliers"
+              element={
+                <PrivateRoute>
+                  <Suppliers />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/categories"
+              element={
+                <PrivateRoute>
+                  <Categories />
                 </PrivateRoute>
               }
             />

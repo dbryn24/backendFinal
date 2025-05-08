@@ -7,6 +7,10 @@ const categorySchema = new mongoose.Schema(
       required: true,
       index: true,
     },
+    description: {
+      type: String,
+      default: "", // Menggunakan default kosong, bukan null
+    },
   },
   {
     timestamps: true,
